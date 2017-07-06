@@ -3,7 +3,11 @@ import React, { Component } from 'react'
 import './NoteForm.css'
 
 class NoteForm extends Component {
+  constructor(props){
+    super(props)
+  }
   render() {
+  //  let
     return (
       <div className="NoteForm">
         <div className="form-actions">
@@ -13,6 +17,7 @@ class NoteForm extends Component {
         </div>
         <form>
           <p>
+            {/*{console.log(props.notes)}*/}
             <input
               type="text"
               name="title"
