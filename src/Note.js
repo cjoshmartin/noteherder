@@ -8,8 +8,9 @@ const Note = (props) => {
   return (
     <a
       className="active"
-      onClick={handleClick}
+      onClick={() => handleClick(props.note.id)}
     >
+
       <li>
         <div className="note">
           <div className="note-title">

@@ -27,34 +27,49 @@ class App extends Component {
      currentNote: '', 
     } // end of state 
  this.handleNote = this.handleNote.bind(this)
+ this.handleNewNote = this.handleNewNote.bind(this)
   } // end of constructor
 
   handleNote (noteChange){
+    // console.log(noteChange)
     this.setState({currentNote:noteChange})
+  }
+  handleNewNote(note){
+    //  CAN't not append to the current array
+    const notesLength = Object.keys(this.state.notes).length
+    const noteName = 'note-' + (notesLength+1)
+    console.log(note)
+    const newState = {...this.state}
+    newState.notes[note.id]=note
+    this.setState(newState)
   }
   notesView(props){
 
   }
+
   render() {
-    // console.log("I CAN REVICE THE TACOS OUT HERE!")
     let content = null;
     var id = this.state.currentNote
     var notes = this.state.notes
     let currentNote = notes[id]
-
+    console.log(currentNote && currentNote.title)
     if(id !== '')
     {
-      // console.log(this.state.currentNote)
-      // console.log("GIVE ME TACOS")
       content =(
         <div>
-         <div className="note">
+            <button type="button" style={{border: "none",background: "none",padding: 0}}>
+            <i className="fa fa-trash-o" style={{color: "#999",fontSize: "2rem", margin: 0}}></i>
+          </button>
+         <div className="note"  style={{marginLeft:"31rem" , maxWidth: "80rem" }}>
+           
            <div className="note-title">
-             THIS IS THE TITLE
+             <h1>
+            {currentNote.title}  
+            </h1>
              </div>
              <div className="note-body">
                <p>
-                THIS IS THE THE BODY OF THIS 
+               {currentNote.body} 
                 </p>
                </div>
            </div> 
@@ -63,7 +78,7 @@ class App extends Component {
     }
     else{
 
-     content= <NoteForm notes={this.state.notes} />
+     content= <NoteForm notes={this.state.notes} onFormSubmit={this.handleNewNote}/>
     }
     return (
       <div className="Main">
