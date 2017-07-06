@@ -17,7 +17,6 @@ class NoteForm extends Component {
         </div>
         <form>
           <p>
-            {/*{console.log(props.notes)}*/}
             <input
               type="text"
               name="title"
