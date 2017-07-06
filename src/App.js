@@ -28,6 +28,7 @@ class App extends Component {
     } // end of state 
  this.handleNote = this.handleNote.bind(this)
  this.handleNewNote = this.handleNewNote.bind(this)
+ this.handleDelete = this.handleDelete.bind(this)
   } // end of constructor
 
   handleNote (noteChange){
@@ -43,10 +44,13 @@ class App extends Component {
     newState.notes[note.id]=note
     this.setState(newState)
   }
-  notesView(props){
-
-  }
-
+handleDelete(note)
+{
+  const newState = {...this.state}
+  delete newState.notes[this.state.currentNote]
+  newState.currentNote =''
+  this.setState(newState)
+}
   render() {
     let content = null;
     var id = this.state.currentNote
@@ -57,8 +61,8 @@ class App extends Component {
     {
       content =(
         <div>
-            <button type="button" style={{border: "none",background: "none",padding: 0}}>
-            <i className="fa fa-trash-o" style={{color: "#999",fontSize: "2rem", margin: 0}}></i>
+            <button type="button" style={{border: "none",background: "none",padding: 0}} onClick={this.handleDelete}>
+            <i className="fa fa-trash-o" style={{color: "#999",fontSize: "2rem", margin: 0}} />
           </button>
          <div className="note"  style={{marginLeft:"31rem" , maxWidth: "80rem" }}>
            
@@ -83,7 +87,7 @@ class App extends Component {
     return (
       <div className="Main">
         <Sidebar />
-      <NoteList notes={this.state.notes} onNoteChange={this.handleNote}/>
+      <NoteList notes={this.state.notes} onNoteChange={this.handleNote} />
       {content}
       </div>
     );
