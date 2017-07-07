@@ -1,94 +1,83 @@
 import React, { Component } from 'react'
+import dataBase from './dataBase'
 
 import './App.css'
 import Main from './Main'
 
-import './Main.css'
-import Sidebar from './Sidebar'
-import NoteList from './NoteList'
-import NoteForm from './NoteForm'
 class App extends Component {
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
 
     this.state = {
-      notes: {
-        'note-1': {
-          id: 'note-1',
-          title: 'My fancy note from App',
-          body: 'This note is so fancy!',
-        },
-        'note-2': {
-          id: 'note-2',
-          title: 'Another one from App',
-          body: 'Also very fancy',
-        },
-      },
-     currentNote: '', 
-    } // end of state 
- this.handleNote = this.handleNote.bind(this)
- this.handleNewNote = this.handleNewNote.bind(this)
- this.handleDelete = this.handleDelete.bind(this)
-  } // end of constructor
+      notes: {},
+      currentNote: this.blankNote(),
+    }
+  }
 
-  handleNote (noteChange){
-    // console.log(noteChange)
-    this.setState({currentNote:noteChange})
+  componentDidMount = () => {
+    dataBase.syncState(
+      'notes',
+      {
+        context: this,  // what object the state is on
+        state: 'notes', // which property to sync
+      }
+    )
   }
-  handleNewNote(note){
-    //  CAN't not append to the current array
-    const notesLength = Object.keys(this.state.notes).length
-    const noteName = 'note-' + (notesLength+1)
-    console.log(note)
-    const newState = {...this.state}
-    newState.notes[note.id]=note
-    this.setState(newState)
+
+  blankNote = () => {
+    return {
+      id: null,
+      title: '',
+      body: '',
+    }
   }
-handleDelete(note)
-{
-  const newState = {...this.state}
-  delete newState.notes[this.state.currentNote]
-  newState.currentNote =''
-  this.setState(newState)
-}
+
+  setCurrentNote = (note) => {
+    this.setState({ currentNote: note })
+  }
+
+  resetCurrentNote = () => {
+    this.setCurrentNote(this.blankNote())
+  }
+
+  saveNote = (note) => {
+    const notes = {...this.state.notes}
+    if (!note.id) {
+      note.id = Date.now()
+    }
+    notes[note.id] = note
+
+    this.setState({ notes })
+    this.setCurrentNote(note)
+  }
+
+  removeCurrentNote = () => {
+    const notes = {...this.state.notes}
+    notes[this.state.currentNote.id] = null
+
+    this.setState({ notes })
+    this.resetCurrentNote()
+  }
+
   render() {
-    let content = null;
-    var id = this.state.currentNote
-    var notes = this.state.notes
-    let currentNote = notes[id]
-    console.log(currentNote && currentNote.title)
-    if(id !== '')
-    {
-      content =(
-        <div>
-            <button type="button" style={{border: "none",background: "none",padding: 0}} onClick={this.handleDelete}>
-            <i className="fa fa-trash-o" style={{color: "#999",fontSize: "2rem", margin: 0}} />
-          </button>
-         <div className="note"  style={{marginLeft:"31rem" , maxWidth: "80rem" }}>
-           
-           <div className="note-title">
-             <h1>
-            {currentNote.title}  
-            </h1>
-             </div>
-             <div className="note-body">
-               <p>
-               {currentNote.body} 
-                </p>
-               </div>
-           </div> 
-          </div>
-      )
+    const actions = {
+      setCurrentNote: this.setCurrentNote,
+      resetCurrentNote: this.resetCurrentNote,
+      saveNote: this.saveNote,
+      removeCurrentNote: this.removeCurrentNote,
     }
-    else{
 
-     content= <NoteForm notes={this.state.notes} onFormSubmit={this.handleNewNote}/>
+    const noteData = {
+      notes: this.state.notes,
+      currentNote: this.state.currentNote,
     }
+
     return (
-      <div className="Main">
-        <Sidebar />
-      <NoteList notes={this.state.notes} onNoteChange={this.handleNote} />
-      {content}
+      <div className="App">
+        <Main
+          {...actions}
+          {...noteData}
+        />
       </div>
     );
   }

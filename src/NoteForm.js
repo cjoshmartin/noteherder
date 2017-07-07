@@ -3,41 +3,42 @@ import React, { Component } from 'react'
 import './NoteForm.css'
 
 class NoteForm extends Component {
-  constructor(props){
-    super(props)
+  handleChanges = (ev) => {
+    const note = {...this.props.currentNote}
+    note[ev.target.name] = ev.target.value
 
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.props.saveNote(note)
   }
-  handleSubmit(ev){
-    ev.preventDefault()
-    // this.props.onFormSubmit()
-    const notesLength = Object.keys(this.props.notes).length
-    const noteName = 'note-' + (notesLength+1)
-    const newObjec= {
-      id: noteName,
-      title: ev.target.title.value,
-      body: ev.target.body.value,
-    }
-    this.props.onFormSubmit(newObjec)
-  }
+
   render() {
+    const { currentNote } = this.props
+
     return (
       <div className="NoteForm">
-        {console.log(this.props)}
         <div className="form-actions">
-          <button type="button">
+          <button
+            type="button"
+            onClick={this.props.removeCurrentNote}
+          >
             <i className="fa fa-trash-o"></i>
           </button>
         </div>
-        <form onSubmit={this.handleSubmit}>
+        <form>
+          <p>
             <input
               type="text"
               name="title"
               placeholder="Title your note"
+              value={currentNote.title}
+              onChange={this.handleChanges}
             />
+          </p>
           
-          <textarea name="body"></textarea>
-          <button type="submit">Submit</button>
+          <textarea
+            name="body"
+            value={currentNote.body}
+            onChange={this.handleChanges}
+          ></textarea>
         </form>
       </div>
     )
