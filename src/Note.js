@@ -6,21 +6,16 @@ const Note = ({ note, setCurrentNote }) => {
   }
 
   return (
-    <a
-      className="active"
-      onClick={handleClick}
-    >
-
+    <a onClick={handleClick}>
       <li>
         <div className="note">
           <div className="note-title">
             {note.title}
           </div>
-          <div className="note-body">
-            <p>
-              {note.body}
-            </p>
-          </div>
+          <div
+            className="note-body"
+            dangerouslySetInnerHTML={{ __html: note.body }}
+          ></div>
         </div>
       </li>
     </a>
