@@ -1,6 +1,6 @@
-NoteForm {
-  flex-grow: 1;
-  padding: 0 3rem;
+.NoteForm {
+  width: 100%;
+
 }
 .NoteForm .form-actions {
   padding-top: 1rem;
