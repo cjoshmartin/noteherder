@@ -51,13 +51,27 @@ class App extends Component {
 
   saveNote = (note) => {
     let shouldRedirect = false
+
     if (!note.id) {
       note.id = Date.now()
       shouldRedirect = true
     }
 
+    note.date = new Date().getTime()
+
     const notes = {...this.state.notes}
     notes[note.id] = note
+
+    // let reSort = Object.values(notes) //  object ==> array
+    //
+    // reSort.sort((a,b)=>{ // sorts by date
+    //   return b.date - a.date
+    // })
+    // reSort.reduce((result,item) =>{ //  array ==> object && adds back Id as key
+    //   result[item.id] = item
+    //   return result
+    // },{})
+
 
     this.setState({ notes })
 
