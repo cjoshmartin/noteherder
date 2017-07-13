@@ -13,9 +13,13 @@ class NoteForm extends Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
-    const nextId = nextProps.currentNoteId
-    const note = nextProps.notes[nextId] || this.blankNote()
+    const idFromUrl = nextProps.match.params.id
+    const note = nextProps.notes[idFromUrl] || this.blankNote()
 
+    if( (idFromUrl && !note.id) && nextProps.firebaseNotesSynced) // note not found and is not in firebase
+    {
+      this.nextProps.history.replace('/notes')
+    }
     let editorValue = this.state.editorValue
     if (editorValue.toString('html') !== note.body) {
       editorValue = RichTextEditor.createValueFromString(note.body, 'html')
@@ -57,7 +61,7 @@ class NoteForm extends Component {
         <div className="form-actions">
           <button
             type="button"
-            onClick={this.props.removeCurrentNote}
+            onClick={() => this.props.removeNote(this.state.note)}
           >
             <i className="fa fa-trash-o"></i>
           </button>

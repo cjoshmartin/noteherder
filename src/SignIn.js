@@ -2,13 +2,21 @@ import React from 'react'
 import './signin.css'
 import quill from './quill.svg'
 import googleLogo from './google.svg'
-import {auth, googleProvider} from './dataBase'
+import githublogo from './GitHub-Mark-32px.png'
+import twitterlogo from './TwitterLogo.png'
+import {auth, googleProvider, githubProvider, twitterProvider } from './dataBase'
 
 const SignIn = ({handleAuth}) => {
-  const authenticate = () => {
+
+  const GoogleAuthenticate = () => {
     auth.signInWithPopup(googleProvider)
   }
-
+  const TwitterAuthenticate = () => {
+    auth.signInWithPopup(twitterProvider)
+  }
+  const GithubAuthenticate = () => {
+    auth.signInWithPopup(githubProvider)
+  }
   return (
   <div className="SignIn">
     <header className="Header">
@@ -21,10 +29,24 @@ const SignIn = ({handleAuth}) => {
 
       <button
         className="google"
-        onClick={authenticate}
+        onClick={GoogleAuthenticate}
       >
         <img src={googleLogo} alt="" />
-        Sign in with Google
+        &nbsp;Sign in with Google
+      </button>
+      <button
+        className="github"
+        onClick={GithubAuthenticate}
+      >
+        <img src={githublogo} alt="" />
+        &nbsp;Sign in with Github
+      </button>
+      <button
+        className="twitter"
+        onClick={TwitterAuthenticate}
+      >
+        <img src={twitterlogo} width="32px" alt="" />
+        &nbsp;Sign in with Twitter
       </button>
     </main>
   </div>
